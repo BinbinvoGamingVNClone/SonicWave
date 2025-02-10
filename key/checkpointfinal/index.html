@@ -1,109 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SONIC WAVE | License Key</title>
+    <title>Generate 1-Day Key</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            text-align: center;
+            margin: 50px;
         }
         .container {
-            background: #ffffff;
-            padding: 20px 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
             max-width: 400px;
-            width: 100%;
-        }
-        h1 {
-            font-size: 1.8em;
-            color: #333;
-            margin-bottom: 20px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
         }
         button {
-            width: 100%;
             padding: 10px;
-            margin: 10px 0;
-            font-size: 1em;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            background-color: #007bff;
-            color: #fff;
+            margin-top: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
             cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
+            border-radius: 5px;
         }
         button:disabled {
-            background-color: #cccccc;
+            background: gray;
             cursor: not-allowed;
         }
-        .output {
-            margin-top: 20px;
-            padding: 10px;
-            background: #f8f9fa;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            word-wrap: break-word;
-            font-family: monospace;
-        }
-        .output span {
+        .key-box {
+            margin-top: 15px;
             font-weight: bold;
+            color: green;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Generate License Key</h1>
-        <button id="generateBtn" onclick="generateKey()">Generate Key</button>
-        <div class="output" id="output">
-            <span>Generated Key:</span> <br /> (Your key will appear here)
-        </div>
-    </div>
 
-    <script>
-        const salt = "SonicWave_39rfgrb9irirmnfg9imnrape9fjb903ejnrgf9bojmltknrhgfu90pomtkrnp9jroegfjdpbi9kmriegfkr"; // Chuỗi bí mật
-        let hasGenerated = false;
+<div class="container">
+    <h2>Generate 1-Day License Key</h2>
+    <button id="generateBtn" onclick="generateKey()">Generate Key</button>
+    <div class="key-box" id="keyOutput">Your key will appear here</div>
+</div>
 
-        function generateKey() {
-            if (hasGenerated) return;
+<script>
+    const allowedURLs = [
+        "https://lootdest.org/s?iemHBZms"
+    ]; // Chỉ cho phép trang web này mở
 
-            const outputDiv = document.getElementById("output");
-
-            // Tạo mã băm SHA-256 với timestamp
-            const timestamp = Date.now().toString();
-            sha256(salt + timestamp).then(hash => {
-                const licenseKey = formatLicenseKey(hash);
-                outputDiv.innerHTML = `<span>Generated Key:</span> <br /> ${licenseKey}`;
-                outputDiv.style.color = "black";
-
-                // Vô hiệu hóa nút sau khi tạo
-                hasGenerated = true;
-                document.getElementById("generateBtn").disabled = true;
-            });
+    function checkReferrer() {
+        const referrer = document.referrer;
+        let allowed = false;
+        for (let url of allowedURLs) {
+            if (referrer.startsWith(url)) {
+                allowed = true;
+                break;
+            }
         }
-
-        // Hàm tạo mã băm SHA-256
-        async function sha256(message) {
-            const msgBuffer = new TextEncoder().encode(message);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        if (!allowed) {
+            window.location.href = "https://lootdest.org/s?XXmYzo9q"; // Chuyển hướng nếu không hợp lệ
         }
+    }
 
-        // Hàm format License Key (chia thành nhóm 4 ký tự, nối bằng '-')
-        function formatLicenseKey(hash) {
-            return hash.match(/.{1,4}/g).slice(0, 5).join('-').toUpperCase();
-        }
-    </script>
+    checkReferrer(); // Kiểm tra ngay khi trang tải
+
+    function generateKey() {
+        const expiration = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(); // Hạn 24h
+        const randomPart = Math.random().toString(36).substring(2, 10).toUpperCase();
+        const key = `1DAY-${randomPart}-${btoa(expiration)}`;
+
+        document.getElementById("keyOutput").innerHTML = key;
+        document.getElementById("generateBtn").disabled = true; // Giới hạn tạo key 1 lần
+    }
+</script>
+
 </body>
 </html>
