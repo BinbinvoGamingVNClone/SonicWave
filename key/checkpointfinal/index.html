@@ -47,26 +47,7 @@
     <div class="key-box" id="keyOutput">Your key will appear here</div>
 </div>
 
-<script>
-    const allowedURLs = [
-        "https://lootdest.org/s?iemHBZms"
-    ]; // Chỉ cho phép trang web này mở
-
-    function checkReferrer() {
-        const referrer = document.referrer;
-        let allowed = false;
-        for (let url of allowedURLs) {
-            if (referrer.startsWith(url)) {
-                allowed = true;
-                break;
-            }
-        }
-        if (!allowed) {
-            window.location.href = "https://lootdest.org/s?XXmYzo9q"; // Chuyển hướng nếu không hợp lệ
-        }
-    }
-
-    checkReferrer(); // Kiểm tra ngay khi trang tải
+<script> // Kiểm tra ngay khi trang tải
 
     function generateKey() {
         const expiration = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(); // Hạn 24h
